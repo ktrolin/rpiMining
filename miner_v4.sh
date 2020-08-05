@@ -1,5 +1,8 @@
 #!/bin/bash
 
+rm -r transitFiles/
+mkdir transitFiles/
+
 ~/miningScripts/FTCprofit.sh
 ~/miningScripts/ORBprofit.sh
 ~/miningScripts/PXCprofit.sh
