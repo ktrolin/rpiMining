@@ -1,0 +1,1 @@
+{"currblk":2031101,"khs":4959462.578,"retblk":2031102,"blkstoret":1,"exptimeperblk":93.366666666667,"nowdiff":89.02180315,"nextdiff":97.078964141501,"timetoret":93.366666666667,"days":0,"hours":0,"min":1,"sec":33,"totcm":187044760}
