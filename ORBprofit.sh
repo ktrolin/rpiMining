@@ -19,14 +19,22 @@ electricityRate=0.04
 blockCoins=1
 costHardware=0
 
-curl -s 'https://api.thingspeak.com/apps/thinghttp/send_request?api_key=S9GONNF0B09MONE7' > ~/miningScripts/transitFiles/ORBval.txt
+curl -s 'https://api.thingspeak.com/apps/thinghttp/send_request?api_key=S9GONNF0B09MONE7' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?' > ~/miningScripts/transitFiles/ORBval.txt
 curl -s 'https://api.thingspeak.com/apps/thinghttp/send_request?api_key=N3BIRBV2511D9TW9' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?' > ~/miningScripts/transitFiles/ORBdif.txt
 difficulty=( $( < ~/miningScripts/transitFiles/ORBdif.txt) )
 conversionRate=( $( < ~/miningScripts/transitFiles/ORBval.txt) )
 
+#usd to eur
+curl -s 'https://api.thingspeak.com/apps/thinghttp/send_request?api_key=ECBVYTVUJ9U8GBBR' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?' > ~/miningScripts/transitFiles/usdToEur.txt
+convUSDtoEUR=( $( < ~/miningScripts/transitFiles/usdToEur.txt) )
+
+conversionRate2=`echo "scale=3;
+var1 = $conversionRate * $convUSDtoEUR;
+var1 " \
+| bc`
 
 echo "difficulty "$difficulty ""
-echo "conversionRate "$conversionRate " eur"
+echo "conversionRate "$conversionRate2 " eur"
 
 #The average amount of time (in seconds) to find a single share is:
 #hashTime = ((float) $difficulty) * (pow(2.0, 32) / ($hashRate * 1000.0)) ;
@@ -60,7 +68,7 @@ echo "coinsPerYear "$coinsPerYear" pc."
 
 #revenuePerYear = $coinsPerYear * $conversionRate;
 revenuePerYear=`echo "scale=3;
-var1 = $coinsPerYear * $conversionRate;
+var1 = $coinsPerYear * $conversionRate2;
 var1 " \
 | bc`
 echo "revenuePerYear "$revenuePerYear" eur"
